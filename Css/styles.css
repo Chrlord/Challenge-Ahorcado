@@ -1,0 +1,679 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: "Roboto Mono", monospace;
+}
+body {
+  font-size: 14px;
+  line-height: 1.4;
+  background-image: url(/Image/StarBlueSky.png);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  min-width: 100%;
+  overflow: hidden;
+}
+
+body.dark {
+  background-image: url(/Image/Noche-Oscura.jpg);
+}
+
+.nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  background: transparent;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 90%;
+}
+
+.clip-path {
+  margin: 20px;
+  width: 55px;
+  height: 55px;
+  background-image: linear-gradient(#63b9c4, #091d68d3);
+  filter: brightness(1.5);
+  clip-path: url("#clip");
+}
+
+.nav-menu {
+  display: grid; /*Se posicionan uno debajo del otro*/
+  grid-auto-flow: column;
+  gap: 3em; /* Espacio entre los elementos */
+}
+
+.lightDark {
+  position: absolute;
+  top: 20px;
+  right: 350px;
+  background: rgba(0, 0, 0, 0.15);
+  filter: drop-shadow(0 0 2px #000000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 33px;
+  border-radius: 50%;
+}
+
+body.dark .lightDark {
+  background: rgba(255, 255, 255, 0.1);
+  filter: drop-shadow(0 0 2px #f7f6f2);
+}
+
+.lightDark::before {
+  content: "\f186";
+  font-family: FontAwesome;
+  font-weight: 300;
+  font-size: 25px;
+  color: #a8afc6d3;
+  cursor: pointer;
+  transition: 0.3s;
+  animation: parpadear 3s infinite;
+}
+
+@keyframes parpadear {
+  0% {
+    opacity: 0.3;
+  }
+  25% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+body.dark .lightDark::before {
+  content: "\f185";
+  color: #f9c541b1;
+  transition: color 0.3s ease-in-out;
+}
+
+/* Estilos para los elementos (a) del menu. */
+.nav-item {
+  color: #091e68ea;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding-right: 20px;
+  transition: all 0.3s ease-in-out;
+  --clippy: polygon(0 0, 0 0, 0 100%, 0% 100%);
+}
+
+body.dark .nav-item {
+  color: #ffffffd3;
+  cursor: pointer;
+}
+
+.nav-item::after {
+  content: "";
+  display: block;
+  background-color: #58f3fbde;
+  width: 100%;
+  height: 3px;
+  margin-top: 3px;
+  border-radius: 50%;
+  clip-path: var(--clippy);
+  transition: clip-path 0.5s;
+}
+
+body.dark .nav-item::after {
+  background-color: #ffffffb1;
+}
+
+.nav-item:hover {
+  --clippy: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  filter: drop-shadow(0 0 10px #ffffff);
+}
+
+.nav-img {
+  width: 55px;
+  height: 60px;
+  margin-top: 20px;
+}
+
+.nav-label,
+.nav-check {
+  display: none;
+}
+
+.infoContacto,
+.infoJuego {
+  position: absolute;
+  transform: scale(0);
+}
+
+.infoContacto.active,
+.infoJuego.active {
+  transform: scale(1);
+  transition: transform 1.2s;
+}
+
+.infoContacto.inactive,
+.infoJuego.inactive {
+  transform: scale(0);
+  transition: transform 0.5s;
+}
+
+.infoContacto .tarjeta,
+.infoJuego .tarjeta {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  background: rgba(99, 185, 196, 0.5);
+  border-radius: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  margin: 10px;
+  padding: 20px;
+  overflow: hidden; /*para que no se vea el overflow de la imagen "Las esquinas"*/
+}
+
+body.dark .infoContacto .tarjeta,
+body.dark .infoJuego .tarjeta {
+  background: rgba(0, 0, 0, 0.596);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.infoContacto .tarjeta .imgBx {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px; /* Se lo aplica al div */
+  overflow: hidden; /*para que no se vea el overflow de la imagen "las esquinas"*/
+  transition: 0.5s;
+  z-index: 10000;
+  transform-origin: top;
+}
+
+.infoContacto .tarjeta:hover .imgBx {
+  filter: drop-shadow(0 0 5px #fff);
+  transform: translateY(30px) scale(0.5);
+}
+
+.infoContacto .tarjeta .imgBx img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.infoContacto .tarjeta .contenido {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 30px;
+  transform: translateY(100%);
+  transition: 0.5s;
+}
+
+.infoContacto .tarjeta:hover .contenido {
+  transform: translateY(0);
+}
+
+.infoContacto .tarjeta .contenido .detalles {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.infoContacto .tarjeta .contenido .detalles h2,
+.infoJuego .tarjeta .instrucciones h2 {
+  color: #091d68d3;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-align: center;
+}
+
+body.dark .infoContacto .tarjeta .contenido .detalles h2,
+body.dark .infoJuego .tarjeta .instrucciones h2 {
+  color: #ffffffd3;
+}
+
+.infoContacto .tarjeta .contenido .detalles h2 span,
+.infoJuego .tarjeta .instrucciones p {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #091d68d3;
+  margin-top: 20px;
+  line-height: 1.5em;
+  letter-spacing: 1.2px;
+  text-align: center;
+}
+
+.instrucciones a {
+  position: relative;
+  width: 45px;
+  height: 45px;
+  font-size: 1.5rem;
+  bottom: -80px;
+  right: -225px;
+  color: #ffffff;
+  transition: 0.6s;
+}
+
+body.dark .infoContacto .tarjeta .contenido .detalles h2 span,
+body.dark .infoJuego .tarjeta .instrucciones p {
+  color: #ffffffd3;
+}
+
+.socialIcons {
+  position: relative;
+  display: flex;
+  margin-top: 5px;
+}
+
+.socialIcons li {
+  list-style: none;
+  margin: 5px;
+}
+
+.socialIcons li a {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: #ffffff;
+  transition: 0.6s;
+}
+
+body.dark .socialIcons li a {
+  color: #ffffffb1;
+}
+
+.socialIcons :nth-child(4) {
+  position: absolute;
+  bottom: -30px;
+  right: -55px;
+  color: #ffffff;
+  transition: 0.6s;
+}
+
+.socialIcons :nth-child(1) a:hover {
+  transform: rotate(360deg);
+  filter: drop-shadow(0 0 5px #fff);
+  background: #171515;
+}
+
+.socialIcons :nth-child(2) a:hover {
+  transform: rotate(360deg);
+  filter: drop-shadow(0 0 5px #fff);
+  background: linear-gradient(42.5deg, #f9ed32, #ee2a7b, #002aff);
+}
+
+.socialIcons :nth-child(3) a:hover {
+  transform: rotate(360deg);
+  filter: drop-shadow(0 0 5px #fff);
+  background: #00acee;
+}
+
+.socialIcons :nth-child(4) a:hover,
+.instrucciones a:hover {
+  color: #e51212b6;
+  filter: drop-shadow(0 0 5px #bb7272);
+}
+
+.container-btnsJuego.active .play,
+.container-btnsJuego.active .newWord {
+  transform: scale(0) rotateY(360deg);
+  transition: 2s ease;
+}
+
+.btn {
+  border: none;
+  margin: 10px;
+  padding: 15px;
+  cursor: pointer;
+  width: 250px;
+  text-transform: uppercase;
+  font-size: 1.2em;
+  font-weight: 600;
+  border-radius: 7px;
+  display: flex;
+  justify-content: center;
+  /* background-size: 100%; */
+  transition: 0.6s;
+  color: #091d68d3;
+  overflow: hidden;
+}
+
+body.dark .btn {
+  color: #ffffffd3;
+}
+
+.play,
+.guardarPalabra,
+.reiniciar {
+  background: linear-gradient(to left, transparent, #63b9c4, #12161790);
+}
+
+.play:hover,
+.guardarPalabra:hover,
+.reiniciar:hover {
+  transition: all 0.5s;
+  color: #fff;
+  filter: drop-shadow(0 0 5px #fff);
+  background: linear-gradient(to right, transparent, #63b9c4, #12161790);
+}
+
+body.dark .play:hover,
+body.dark .guardarPalabra:hover,
+body.dark .reiniciar:hover {
+  transition: all 0.5s;
+  color: #002aff;
+}
+
+.newWord,
+.cancelar,
+.salir {
+  background: linear-gradient(to right, transparent, #63b9c4, #12161790);
+}
+
+.newWord:hover,
+.cancelar:hover,
+.salir:hover {
+  transition: all 0.5s;
+  color: #fff;
+  filter: drop-shadow(0 0 5px #fff);
+  background: linear-gradient(to left, transparent, #63b9c4, #12161790);
+}
+
+body.dark .newWord:hover,
+body.dark .cancelar:hover,
+body.dark .salir:hover {
+  transition: all 0.5s;
+  color: #002aff;
+}
+
+.loader {
+  position: relative;
+  display: none;
+}
+
+.loader::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background-color: #00bbd4be;
+  animation: cursor 0.8s steps(3) infinite;
+}
+
+.loader h2 {
+  position: relative;
+  color: #091d68d3;
+  letter-spacing: 5px;
+  font-size: 3em;
+  text-transform: uppercase;
+  filter: drop-shadow(0 0 10px #fff);
+  animation: typing 3s steps(10) infinite;
+  overflow: hidden;
+}
+
+body.dark .loader h2 {
+  color: #ffffffd3;
+}
+
+.container-ahorcado {
+  display: none;
+  position: absolute;
+  top: 0px;
+  bottom: 20px;
+  width: 90%;
+  height: 78%;
+  margin: 60px auto;
+  padding: 5px;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+}
+
+.container-btnsAhorcado {
+  display: flex;
+  position: absolute;
+  bottom: 40px;
+  opacity: 0;
+}
+
+.container-btnsPalabra {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: none;
+  --color: #5757579f;
+  transition: 0.5s;
+}
+
+.nuevaPalabra {
+  background: none;
+  width: 100%;
+  font-family: inherit;
+  font-size: 1.5rem;
+  color: #091d68d3;
+  padding: 20px;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #2c2b2b91;
+}
+
+body.dark .nuevaPalabra {
+  color: #fff;
+  border-bottom: 1px solid #ffffffd1;
+}
+
+.nuevaPalabra:not(:placeholder-shown) + .labelNewWord,
+.nuevaPalabra:focus + .labelNewWord {
+  transform: translateY(-15px) scale(0.8);
+  transform-origin: center;
+  --color: #091d68d3;
+}
+
+body.dark .nuevaPalabra:not(:placeholder-shown) + .labelNewWord,
+body.dark .nuevaPalabra:focus + .labelNewWord {
+  --color: #ffffffb6;
+}
+
+.labelNewWord {
+  color: var(--color);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  position: absolute;
+  top: 16px;
+  right: 85px;
+  transform: translateY(16px);
+  transition: transform 0.5s, color 0.3s;
+}
+
+/*
+*** MENSAJES ***
+*/
+
+/* .msgs {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 80px;
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.msg-success {
+  color: rgba(30, 255, 0, 0.4);
+}
+
+.msg-alert {
+  color: rgba(255, 166, 0, 0.4);
+}
+
+.msg-wrong {
+  color: rgba(255, 0, 0, 0.4);
+}
+
+.msg-info {
+  color: rgba(0, 251, 255, 0.4);
+} */
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  color: #091d68d3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+body.dark .footer {
+  color: #ffffffd3;
+}
+
+@keyframes cursor {
+  0%,
+  75% {
+    opacity: 0;
+  }
+  76%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes typing {
+  0%,
+  90%,
+  100% {
+    width: 0;
+  }
+  30%,
+  60% {
+    width: 272.8px;
+  }
+}
+
+@media (max-width: 570px) {
+  .lightDark {
+    position: absolute;
+    right: 100px;
+  }
+
+  .nav-label {
+    display: block;
+    cursor: pointer;
+  }
+
+  .uno {
+    position: fixed; /* Para que salga del flujo */
+    top: 70px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #091e6893;
+    z-index: 1;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+    /* clip-path: circle(0px at center); */
+    transition: clip-path 1s ease-in-out;
+  }
+
+  .uno {
+    clip-path: circle(0% at 100% 0);
+  }
+
+  .nav-menu .lightDark {
+    position: absolute;
+    top: -49px;
+    right: 90px;
+  }
+
+  body.dark .nav-menu {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .nav-item {
+    padding-right: 0;
+    color: #ffffffaf;
+  }
+
+  body.dark .nav-item {
+    color: #002affe1;
+  }
+
+  body.dark .nav-item::after {
+    background-color: #002affe1;
+  }
+
+  body.dark .nav-item:hover {
+    filter: drop-shadow(0 0 10px #0d0d0de1);
+  }
+
+  .nav-check:checked + .nav-menu {
+    /*Cuando esta seleccionado el check, su hermano adyacente menu se muestra*/
+    clip-path: circle(100% at center);
+  }
+
+  .container-btnsAhorcado {
+    scale: 0.8;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+  }
+}
